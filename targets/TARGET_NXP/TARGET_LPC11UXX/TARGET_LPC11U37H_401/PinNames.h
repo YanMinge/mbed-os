@@ -147,6 +147,10 @@ typedef enum {
     SDMISO = P0_8,
     SDSCLK = P1_29,
     SDSSEL = P1_12,
+
+    // Serial to USB pins
+    USBTX = P0_19,
+    USBRX = P0_18,
     
     // Not connected
     NC = (int)0xFFFFFFFF,
