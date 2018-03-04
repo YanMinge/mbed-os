@@ -727,7 +727,7 @@ class mbedToolchain:
         resources.file_basepath[file_path] = base_path
 
         if self.is_ignored(relpath(file_path, base_path)):
-            return
+            resources.ignore_dir(relpath(file_path, base_path))
 
         _, ext = splitext(file_path)
         ext = ext.lower()
