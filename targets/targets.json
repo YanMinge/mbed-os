@@ -229,7 +229,7 @@
         "detect_code": ["1549"],
         "device_has": ["ANALOGIN", "ANALOGOUT", "CAN", "I2C", "INTERRUPTIN", "PWMOUT", "RTC", "SERIAL", "SERIAL_FC", "SPI", "SPISLAVE"],
         "default_lib": "small",
-        "release_versions": ["2"],
+        "release_versions": ["2", "5"],
         "device_name": "LPC1549JBD64"
     },
     "LPC1768": {
