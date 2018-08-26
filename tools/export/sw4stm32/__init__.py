@@ -288,6 +288,11 @@ class Sw4STM32(GNUARMEclipse):
             'name': 'NUCLEO-L496ZG',
             'mcuId': 'STM32L496ZGTx'
         },
+        'STM32F407VE_BLACK':
+        {
+            'name': 'STM32F407VE_BLACK',
+            'mcuId': 'STM32F407VETx'
+        },
     }
 
     @classmethod
