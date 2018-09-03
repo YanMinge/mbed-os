@@ -254,7 +254,12 @@ class Resources(object):
             ref = FileRef(file_name.replace(sep, self._sep), file_path)
         else:
             ref = FileRef(file_name, file_path)
-        self._file_refs[file_type].add(ref)
+        try:
+            self._file_refs[file_type].add(ref)
+        except:
+            print(ref)
+            pass
+            
 
     def get_file_refs(self, file_type):
         """Return a list of FileRef for every file of the given type"""
