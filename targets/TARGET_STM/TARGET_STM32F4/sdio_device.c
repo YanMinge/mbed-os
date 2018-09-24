@@ -237,7 +237,7 @@ uint8_t SD_Init(void) {
     hsd.Init.BusWide = SDIO_BUS_WIDE_1B;
     hsd.Init.HardwareFlowControl = SDIO_HARDWARE_FLOW_CONTROL_DISABLE;
 #ifndef NDEBUG
-    hsd.Init.ClockDiv = 0; //5;        // workaround, in debug build execution is too slow in polling mode
+    hsd.Init.ClockDiv = 0; //8;        // workaround, in debug build execution is too slow in polling mode
 #else
     hsd.Init.ClockDiv = 0;        // sdio clock = 48 MHz / (0 + 2) = 24 MHz
 #endif
