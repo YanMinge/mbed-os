@@ -172,7 +172,7 @@
 								{% endif %}
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths.{{u.id}}" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths" valueType="includePath">
 									{% for path in opts['common']['include_paths'] %}
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/{{path}}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;../{{path}}&quot;"/>
 									{% endfor %}
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.{{u.id}}" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
@@ -182,7 +182,7 @@
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.files.{{u.id}}" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.files" useByScannerDiscovery="true" valueType="includeFiles">
 									{% for file in opts['common']['include_files'] %}
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/{{file}}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;../{{file}}&quot;"/>
 									{% endfor %}
 								</option>
 								{% if opts['as']['otherwarnings'] != '' %}
@@ -202,7 +202,7 @@
 								{% endif %}
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths.{{u.id}}" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									{% for path in opts['common']['include_paths'] %}
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/{{path}}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;../{{path}}&quot;"/>
 									{% endfor %}
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.{{u.id}}" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
@@ -212,7 +212,7 @@
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.files.{{u.id}}" name="Include files (-include)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.files" useByScannerDiscovery="true" valueType="includeFiles">
 									{% for file in opts['common']['include_files'] %}
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/{{file}}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;../{{file}}&quot;"/>
 									{% endfor %}
 								</option>
 								{% if opts['c']['compiler.std'] %}
@@ -250,7 +250,7 @@
 								{% endif %}
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths.{{u.id}}" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									{% for path in opts['common']['include_paths'] %}
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/{{path}}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;../{{path}}&quot;"/>
 									{% endfor %}
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.{{u.id}}" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
@@ -260,7 +260,7 @@
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.files.{{u.id}}" name="Include files (-include)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.files" useByScannerDiscovery="true" valueType="includeFiles">
 									{% for file in opts['common']['include_files'] %}
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/{{file}}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;../{{file}}&quot;"/>
 									{% endfor %}
 								</option>
 								{% if opts['cpp']['compiler.std'] %}
@@ -318,11 +318,11 @@
 							</tool>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker.{{u.id}}" name="Cross ARM C++ Linker" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.scriptfile.{{u.id}}" name="Script files (-T)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.scriptfile" valueType="stringList">
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/{{opts['ld']['script']}}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;../{{opts['ld']['script']}}&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.paths.{{u.id}}" name="Library search path (-L)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.paths" valueType="libPaths">
 									{% for path in opts['ld']['library_paths'] %}
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/{{path}}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;../{{path}}&quot;"/>
 									{% endfor %}
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.libs.{{u.id}}" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.libs" valueType="libs">
@@ -335,10 +335,10 @@
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.otherobjs.{{u.id}}" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.otherobjs" valueType="userObjs">
 									{% for path in opts['ld']['object_files'] %}
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/{{path}}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;../{{path}}&quot;"/>
 									{% endfor %}
 									{% for path in opts['ld']['user_library_files'] %}
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/{{path}}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;../{{path}}&quot;"/>
 									{% endfor %}
 								</option>
 								{% if opts['ld']['gcsections'] %}
