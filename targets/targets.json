@@ -1985,6 +1985,7 @@
     "DISCO_F469NI": {
         "inherits": ["FAMILY_STM32"],
         "supported_form_factors": ["ARDUINO"],
+        "components": ["SDIO"],
         "core": "Cortex-M4F",
         "extra_labels_add": ["STM32F4", "STM32F469", "STM32F469NI", "STM32F469xI", "STM32F469xx"],
         "config": {
