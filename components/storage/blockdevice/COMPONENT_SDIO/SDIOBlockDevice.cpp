@@ -169,19 +169,17 @@ int SDIOBlockDevice::read(void* b, bd_addr_t addr, bd_size_t size) {
         printf("  hsd.errorcode: %lu  0x%lx\n", hsd.ErrorCode, hsd.ErrorCode);
         status = SD_BLOCK_DEVICE_ERROR_READBLOCKS;
     }
-#if (TRANSFER_MODE == TRANSFER_MODE_POLLING)
     else {
         while (SD_GetCardState() != SD_TRANSFER_OK) {
             // wait until SD ready
             wait_ms(10);
         }
     }
-#endif
 
 #if (TRANSFER_MODE == TRANSFER_MODE_DMA)
     while (SD_DMA_ReadPending() != SD_TRANSFER_OK) {
         // wait until DMA transfer done
-        wait_ms(10);
+        wait_ms(20);
     }
 #endif
 
@@ -228,19 +226,17 @@ int SDIOBlockDevice::program(const void* b, bd_addr_t addr, bd_size_t size) {
         printf("  hsd.errorcode: %lu  0x%lx\n", hsd.ErrorCode, hsd.ErrorCode);
         status = SD_BLOCK_DEVICE_ERROR_WRITEBLOCKS;
     }
-#if (TRANSFER_MODE == TRANSFER_MODE_POLLING)
     else {
         while (SD_GetCardState() != SD_TRANSFER_OK) {
             // wait until SD ready
             wait_ms(10);
         }
     }
-#endif
 
     #if (TRANSFER_MODE == TRANSFER_MODE_DMA)
     while (SD_DMA_WritePending() != SD_TRANSFER_OK) {
         // wait until DMA transfer done
-        wait_ms(10);
+        wait_ms(20);
     }
 #endif
 
