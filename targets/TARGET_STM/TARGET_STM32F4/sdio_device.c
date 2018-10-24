@@ -63,6 +63,37 @@ DMA_HandleTypeDef hdma_sdio_tx;
 volatile uint8_t SD_DMA_ReadPendingState  = SD_TRANSFER_OK;
 volatile uint8_t SD_DMA_WritePendingState  = SD_TRANSFER_OK;
 
+
+/* DMA Handlers are global, there is only one SDIO interface */
+
+/**
+* @brief This function handles SDIO global interrupt.
+*/
+void _SDIO_IRQHandler(void)
+{
+    HAL_SD_IRQHandler(&hsd);
+}
+
+/**
+* @brief This function handles DMAx stream_n global interrupt. DMA Rx
+*/
+void _DMA_Stream_Rx_IRQHandler(void)
+{
+  HAL_DMA_IRQHandler(hsd.hdmarx);
+}
+
+/**
+* @brief This function handles DMAx stream_n global interrupt. DMA Tx
+*/
+void _DMA_Stream_Tx_IRQHandler(void)
+{
+  HAL_DMA_IRQHandler(hsd.hdmatx);
+}
+
+/**
+ *
+ * @param hsd:  Handle for SD handle Structure definition
+ */
 void HAL_SD_MspInit(SD_HandleTypeDef *hsd) {
 
     GPIO_InitTypeDef GPIO_InitStruct;
@@ -99,6 +130,7 @@ void HAL_SD_MspInit(SD_HandleTypeDef *hsd) {
 
         /* NVIC configuration for SDIO interrupts */
         HAL_NVIC_SetPriority(SDIO_IRQn, 0x0E, 0);
+        NVIC_SetVector(SDIO_IRQn, (uint32_t) &_SDIO_IRQHandler);
         HAL_NVIC_EnableIRQ(SDIO_IRQn);
 
         /* SDIO DMA Init */
@@ -156,14 +188,24 @@ void HAL_SD_MspInit(SD_HandleTypeDef *hsd) {
         HAL_DMA_Init(&hdma_sdio_tx);
 
         /* Enable NVIC for DMA transfer complete interrupts */
-        HAL_NVIC_SetPriority(DMA2_Stream3_IRQn, 0x0F, 0);
-        HAL_NVIC_EnableIRQ(DMA2_Stream3_IRQn);
+        IRQn_Type IRQn;
 
-        HAL_NVIC_SetPriority(DMA2_Stream6_IRQn, 0x0F, 0);
-        HAL_NVIC_EnableIRQ(DMA2_Stream6_IRQn);
+        IRQn = DMA2_Stream3_IRQn;
+        HAL_NVIC_SetPriority(IRQn, 0x0F, 0);
+        NVIC_SetVector(IRQn, (uint32_t) &_DMA_Stream_Rx_IRQHandler);
+        HAL_NVIC_EnableIRQ(IRQn);
+
+        IRQn = DMA2_Stream6_IRQn;
+        HAL_NVIC_SetPriority(IRQn, 0x0F, 0);
+        NVIC_SetVector(IRQn, (uint32_t) &_DMA_Stream_Tx_IRQHandler);
+        HAL_NVIC_EnableIRQ(IRQn);
     }
 }
 
+/**
+ *
+ * @param hsd:  Handle for SD handle Structure definition
+ */
 void HAL_SD_MspDeInit(SD_HandleTypeDef *hsd) {
 
     if (hsd->Instance == SDIO) {
@@ -236,11 +278,8 @@ uint8_t SD_Init(void) {
     hsd.Init.ClockPowerSave = SDIO_CLOCK_POWER_SAVE_DISABLE;
     hsd.Init.BusWide = SDIO_BUS_WIDE_1B;
     hsd.Init.HardwareFlowControl = SDIO_HARDWARE_FLOW_CONTROL_DISABLE;
-#ifndef NDEBUG
-    hsd.Init.ClockDiv = 0; //8;        // workaround, in debug build execution is too slow in polling mode
-#else
-    hsd.Init.ClockDiv = 0;        // sdio clock = 48 MHz / (0 + 2) = 24 MHz
-#endif
+    hsd.Init.ClockDiv = 0;       // sdio clock=48 MHz/(0+2)=24 MHz
+    // !!! clock must be slower in polling mode if compiled w/o optimization !!!
 
     /* HAL SD initialization */
     sd_state = HAL_SD_Init(&hsd);
@@ -410,30 +449,6 @@ uint8_t SD_DMA_ReadPending(void) {
  */
 uint8_t SD_DMA_WritePending(void) {
     return SD_DMA_WritePendingState;
-}
-
-/**
-* @brief This function handles SDIO global interrupt.
-*/
-void SDIO_IRQHandler(void)
-{
-    HAL_SD_IRQHandler(&hsd);
-}
-
-/**
-* @brief This function handles DMA2 stream3 global interrupt. DMA Rx
-*/
-void DMA2_Stream3_IRQHandler(void)
-{
-  HAL_DMA_IRQHandler(hsd.hdmarx);
-}
-
-/**
-* @brief This function handles DMA2 stream6 global interrupt. DMA Tx
-*/
-void DMA2_Stream6_IRQHandler(void)
-{
-  HAL_DMA_IRQHandler(hsd.hdmatx);
 }
 
 /**

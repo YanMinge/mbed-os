@@ -111,7 +111,7 @@ public:
      *
      *  @note check physical present switch. Maybe not support by hardware, then function will always return true.
      */
-    bool isPresent(void);
+    virtual bool isPresent(void);
 
 private:
     //SD_HandleTypeDef _hsd;
@@ -120,10 +120,8 @@ private:
     bd_size_t _block_size;
     bd_size_t _erase_size;
     bd_size_t _sectors;
-    bool _dbg;
-    //bool _crc_on;
-    uint32_t _init_ref_count;
     uint32_t _sd_state;
+    uint32_t _init_ref_count;
     HAL_SD_CardInfoTypeDef _cardInfo;
     uint32_t _card_type;
 

@@ -97,11 +97,6 @@ uint8_t SD_Erase(uint32_t StartAddr, uint32_t EndAddr);
 uint8_t SD_GetCardState(void);
 void    SD_GetCardInfo(HAL_SD_CardInfoTypeDef *CardInfo);
 
-/* override weak interrupt handler definitions */
-void SDIO_IRQHandler(void);
-void DMA2_Stream3_IRQHandler(void);
-void DMA2_Stream6_IRQHandler(void);
-
 /* callback function for DMA Rx/Tx completete, called by HAL SDIO interrupt handler */
 void HAL_SD_TxCpltCallback(SD_HandleTypeDef *hsd);
 void HAL_SD_RxCpltCallback(SD_HandleTypeDef *hsd);
