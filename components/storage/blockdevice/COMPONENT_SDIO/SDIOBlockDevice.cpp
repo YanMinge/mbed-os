@@ -123,7 +123,7 @@ int SDIOBlockDevice::deinit() {
 }
 
 int SDIOBlockDevice::read(void* b, bd_addr_t addr, bd_size_t size) {
-    //debug_if(SD_DBG, "read Card...\r\n");
+    //debug_if(SD_DBG, "deinit Card...\r\n");
     if (isPresent() == false) {
         return SD_BLOCK_DEVICE_ERROR_NO_DEVICE;
     }
@@ -280,7 +280,7 @@ bd_size_t SDIOBlockDevice::get_program_size() const {
 }
 
 bd_size_t SDIOBlockDevice::size() const {
-    return _block_size * _sectors;
+    return _block_size;
 }
 
 void SDIOBlockDevice::debug(bool dbg) {
