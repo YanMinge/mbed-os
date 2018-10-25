@@ -69,7 +69,8 @@ namespace mbed {
 SDIOBlockDevice::SDIOBlockDevice(PinName cardDetect) :
     _cardDetect(cardDetect),
     _is_initialized(0),
-    _sd_state(SD_BLOCK_DEVICE_ERROR_NO_INIT),
+    _sectors(0),
+    _sd_state(0),
     _init_ref_count(0)
 {
     _card_type = SDCARD_NONE;
@@ -86,7 +87,7 @@ SDIOBlockDevice::~SDIOBlockDevice() {
 }
 
 int SDIOBlockDevice::init() {
-    //debug_if(SD_DBG, "init Card...\r\n");
+    debug_if(SD_DBG, "init Card...\r\n");
     if (isPresent() == false) {
         return SD_BLOCK_DEVICE_ERROR_NO_DEVICE;
     }
@@ -105,7 +106,7 @@ int SDIOBlockDevice::init() {
     }
 
     // get sectors count from cardinfo
-    _sectors = _cardInfo.BlockNbr;
+    _sectors = _cardInfo.LogBlockNbr;
     if (BLOCK_SIZE_HC != _cardInfo.BlockSize) {
         return SD_BLOCK_DEVICE_ERROR_UNSUPPORTED_BLOCKSIZE;
     }
@@ -115,7 +116,7 @@ int SDIOBlockDevice::init() {
 
 
 int SDIOBlockDevice::deinit() {
-    //debug_if(SD_DBG, "deinit Card...\r\n");
+    debug_if(SD_DBG, "deinit Card...\r\n");
     _sd_state = SD_DeInit();
     _is_initialized = false;
 
@@ -171,7 +172,7 @@ int SDIOBlockDevice::read(void* b, bd_addr_t addr, bd_size_t size) {
 #if (TRANSFER_MODE == TRANSFER_MODE_DMA)
     while (SD_DMA_ReadPending() != SD_TRANSFER_OK) {
         // wait until DMA transfer done
-        wait_ms(20);
+        wait_ms(10);
     }
 #endif
 
@@ -280,7 +281,7 @@ bd_size_t SDIOBlockDevice::get_program_size() const {
 }
 
 bd_size_t SDIOBlockDevice::size() const {
-    return _block_size;
+    return _block_size * _sectors;
 }
 
 void SDIOBlockDevice::debug(bool dbg) {
