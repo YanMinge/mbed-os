@@ -34,7 +34,7 @@ namespace mbed {
 #define TRANSFER_MODE_POLLING   (1)
 #define TRANSFER_MODE           TRANSFER_MODE_DMA
 
-#define SD_DBG                                          1      /*!< 1 - Enable debugging */
+#define SD_DBG                                          0      /*!< 1 - Enable debugging */
 #define SD_CMD_TRACE                                    0      /*!< 1 - Enable SD command tracing */
 
 #define SD_BLOCK_DEVICE_ERROR_WOULD_BLOCK               -5001  /*!< operation would block */
