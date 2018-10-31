@@ -95,8 +95,9 @@ void _DMA_Stream_Tx_IRQHandler(void)
  * @param hsd:  Handle for SD handle Structure definition
  */
 void HAL_SD_MspInit(SD_HandleTypeDef *hsd) {
-
+    IRQn_Type IRQn;
     GPIO_InitTypeDef GPIO_InitStruct;
+
     if (hsd->Instance == SDIO) {
         /* Peripheral clock enable */
         __HAL_RCC_SDIO_CLK_ENABLE();
@@ -129,9 +130,10 @@ void HAL_SD_MspInit(SD_HandleTypeDef *hsd) {
         HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
         /* NVIC configuration for SDIO interrupts */
-        HAL_NVIC_SetPriority(SDIO_IRQn, 0x0E, 0);
-        NVIC_SetVector(SDIO_IRQn, (uint32_t) &_SDIO_IRQHandler);
-        HAL_NVIC_EnableIRQ(SDIO_IRQn);
+        IRQn = SDIO_IRQn;
+        HAL_NVIC_SetPriority(IRQn, 0x0E, 0);
+        NVIC_SetVector(IRQn, (uint32_t) &_SDIO_IRQHandler);
+        HAL_NVIC_EnableIRQ(IRQn);
 
         /* SDIO DMA Init */
         /* SDIO_RX Init */
@@ -188,16 +190,14 @@ void HAL_SD_MspInit(SD_HandleTypeDef *hsd) {
         HAL_DMA_Init(&hdma_sdio_tx);
 
         /* Enable NVIC for DMA transfer complete interrupts */
-        IRQn_Type IRQn;
-
         IRQn = DMA2_Stream3_IRQn;
-        HAL_NVIC_SetPriority(IRQn, 0x0F, 0);
         NVIC_SetVector(IRQn, (uint32_t) &_DMA_Stream_Rx_IRQHandler);
+        HAL_NVIC_SetPriority(IRQn, 0x0F, 0);
         HAL_NVIC_EnableIRQ(IRQn);
 
         IRQn = DMA2_Stream6_IRQn;
-        HAL_NVIC_SetPriority(IRQn, 0x0F, 0);
         NVIC_SetVector(IRQn, (uint32_t) &_DMA_Stream_Tx_IRQHandler);
+        HAL_NVIC_SetPriority(IRQn, 0x0F, 0);
         HAL_NVIC_EnableIRQ(IRQn);
     }
 }
@@ -255,14 +255,8 @@ __weak void SD_MspDeInit(SD_HandleTypeDef *hsd, void *Params) {
     /* Disable NVIC for SDIO interrupts */
     HAL_NVIC_DisableIRQ(SDIO_IRQn);
 
-    /* DeInit GPIO pins can be done in the application
-     (by surcharging this __weak function) */
-
     /* Disable SDIO clock */
     __HAL_RCC_SDIO_CLK_DISABLE();
-
-    /* GPOI pins clock and DMA cloks can be shut down in the applic
-     by surcgarging this __weak function */
 }
 
 /**
@@ -278,7 +272,7 @@ uint8_t SD_Init(void) {
     hsd.Init.ClockPowerSave = SDIO_CLOCK_POWER_SAVE_DISABLE;
     hsd.Init.BusWide = SDIO_BUS_WIDE_1B;
     hsd.Init.HardwareFlowControl = SDIO_HARDWARE_FLOW_CONTROL_DISABLE;
-    hsd.Init.ClockDiv = 0;       // sdio clock=48 MHz/(0+2)=24 MHz
+    hsd.Init.ClockDiv = 0;
     // !!! clock must be slower in polling mode if compiled w/o optimization !!!
 
     /* HAL SD initialization */
